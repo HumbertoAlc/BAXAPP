@@ -1,50 +1,141 @@
-# Welcome to your Expo app 👋
+# 💰 Crypto Wallet App
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Una aplicación móvil construida con **Expo** y **React Native** que simula una wallet de criptomonedas. Soporta login simulado, consulta de balances, historial de transacciones, envío/recepción de criptos y visualización de precios **mockeados localmente**.
 
-## Get started
+---
 
-1. Install dependencies
+## 🚀 Características
 
-   ```bash
-   npm install
-   ```
+- ✅ Splash Screen con transición automática
+- ✅ Pantalla de Login simulada
+- ✅ Home con balance total y por activo
+- ✅ Enviar y Recibir criptos (con validación de saldo)
+- ✅ Historial de transacciones locales
+- ✅ Navegación con `expo-router` (File-based Routing)
+- ✅ Estado global con Zustand
+- ✅ Tema oscuro por defecto (desde `app.json`)
+- ✅ Código limpio con TypeScript
 
-2. Start the app
+---
 
-   ```bash
-   npx expo start
-   ```
+## 📁 Estructura de carpetas
 
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
+```
+/app
+  /(tabs)            # Layout para navegación principal
+    home.tsx         # Pantalla principal
+    send.tsx         # Enviar cripto
+    receive.tsx      # Recibir cripto
+    transactions.tsx # Historial
+  login.tsx          # Pantalla de login
+  _layout.tsx        # Layout raíz con control de rutas y login
+/assets              # Imágenes, íconos, splash
+/components          # Componentes reutilizables
+/services/mock       # Precios y transacciones simuladas
+/store               # Estado global con Zustand
+/utils               # Funciones auxiliares (formatos, helpers)
+app.json             # Configuración Expo
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+---
 
-## Learn more
+## ⚙️ Instalación
 
-To learn more about developing your project with Expo, look at the following resources:
+1. Clona el repositorio:
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+```bash
+git clone https://github.com/tu-usuario/crypto-wallet-app.git
+cd crypto-wallet-app
+```
 
-## Join the community
+2. Instala las dependencias:
 
-Join our community of developers creating universal apps.
+```bash
+npm install
+```
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+3. Inicia el servidor de desarrollo:
+
+```bash
+npx expo start
+```
+
+4. Escanea el código QR con [Expo Go](https://expo.dev/client) o usa un emulador.
+
+---
+
+## 🧪 Datos Simulados (Mock)
+
+- Precios en USD predefinidos en:
+
+```ts
+// /services/mock/prices.ts
+export const mockPrices = {
+  bitcoin: { usd: 64000 },
+  ethereum: { usd: 3500 },
+  tether: { usd: 1.0 },
+};
+```
+
+- Transacciones fijas:
+
+```ts
+// /services/mock/transactions.ts
+export const mockTransactions = [
+  {
+    id: '1',
+    date: '2025-06-08T16:34:00Z',
+    type: 'receive',
+    crypto: 'BTC',
+    amount: 0.01,
+  },
+  {
+    id: '2',
+    date: '2025-06-07T13:20:00Z',
+    type: 'send',
+    crypto: 'ETH',
+    amount: 0.05,
+  },
+  {
+    id: '3',
+    date: '2025-06-05T09:12:00Z',
+    type: 'receive',
+    crypto: 'USDT',
+    amount: 200,
+  },
+  {
+    id: '4',
+    date: '2025-06-03T21:45:00Z',
+    type: 'send',
+    crypto: 'BTC',
+    amount: 0.005,
+  },
+];
+```
+
+---
+
+## 📱 Funcionalidad clave
+
+| Pantalla   | Descripción |
+|------------|-------------|
+| `Login`    | Simula login con correo |
+| `Home`     | Muestra balances en USD y por cripto |
+| `Send`     | Permite enviar monto simulado |
+| `Receive`  | Muestra dirección + QR + copiar |
+| `History`  | Lista de transacciones locales |
+
+---
+
+## 🧠 Estado Global
+
+Estado gestionado con **Zustand**, incluyendo:
+
+- `isLoggedIn`: indica si el usuario está autenticado
+- `balances`: saldo de cada cripto
+- `transactions`: historial de operaciones
+
+
+## 📄 Licencia
+
+MIT © 2025
