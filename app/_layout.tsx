@@ -1,38 +1,36 @@
-import { useCryptoStore } from '@/store/cryptoStore';
-import { DarkTheme, ThemeProvider } from '@react-navigation/native';
-import { Slot, useRouter, useSegments } from 'expo-router';
 import { useEffect, useRef } from 'react';
+import { useRouter, useSegments, Slot } from 'expo-router';
+import { useCryptoStore } from '@/store/cryptoStore';
+import { ThemeProvider, DarkTheme } from '@react-navigation/native';
 
 export default function RootLayout() {
-    const router = useRouter();
-    const isLoggedIn = useCryptoStore();
-    const hasNavigated = useRef(false);
+  const isLoggedIn = useCryptoStore((state) => state.isLoggedIn);
+  const router = useRouter();
+  const segments = useSegments();
+  const hasNavigated = useRef(false);
 
-    const segments = useSegments();
-    
+  useEffect(() => {
+    // ✅ Evita navegar hasta que los segmentos estén listos
+    if (segments.length === 0) return;
 
-    useEffect(() => {
+    if (hasNavigated.current) return;
 
-        const path = '/' + segments.join('/');
+    const path = '/' + segments.join('/');
 
-        if (hasNavigated.current) return;
+    if (!isLoggedIn && path.startsWith('/(tabs)')) {
+      router.replace('/login');
+      hasNavigated.current = true;
+    } else if (isLoggedIn && (path === '/login' || path === '/')) {
+      router.replace('/(tabs)');
+      hasNavigated.current = true;
+    }
+  }, [isLoggedIn, segments]);
 
-        console.log('path', path, isLoggedIn)
-
-        if (!isLoggedIn && path.startsWith('/(tabs)')) {
-            router.replace('/login');
-            hasNavigated.current = true;
-        } else if (isLoggedIn && (path === '/login' || path === '/')) {
-            router.replace('/(tabs)');
-            hasNavigated.current = true;
-        }
-    }, [isLoggedIn, router.pathname]);
-
-    return (
-        <ThemeProvider value={DarkTheme}>
-            <Slot />
-        </ThemeProvider>
-    )
+  return (
+    <ThemeProvider value={DarkTheme}>
+      <Slot />
+    </ThemeProvider>
+  );
 }
 // import { CryptoProvider } from '@/store/cryptoStore';
 // import { Slot } from 'expo-router';
